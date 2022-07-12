@@ -29,7 +29,7 @@ const createReview=async function(req,res){
         if(typeof data.review!=="string")return res.status(400).send({ status: false, message: "Please give reviews in String.....COOL" })
         //isDeleted
         if(data.isDeleted){
-            if(data.isDeleted===true)return res.status(400).send({ status: false, message: "You can't delete while making a review!" })
+           
             if(typeof data.isDeleted!=="boolean")return res.status(400).send({ status: false, message: "Please give isDeleted in Boolean type only" })}
 //-----------------------------------------------------------------------------------//
         //Incrementing the reviews in book model
@@ -51,7 +51,7 @@ const createReview=async function(req,res){
 const updateReviews=async function(req,res){
     try{
         const data=req.body
-        if((data.reviewedBy||data.rating||data.review)&&(Object.keys(data).length=3)){
+        if((data.reviewedBy||data.rating||data.review)&&(Object.keys(data).length <=3)){
             const bookId=req.params.bookId
             if(!mongoose.isValidObjectId(bookId))return res.status(400).send({ status: false, message: "BookId is not valid" });
 

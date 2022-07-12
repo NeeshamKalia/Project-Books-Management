@@ -22,13 +22,13 @@ const createBook = async function (req, res) {
   try {
     let data = req.body;
     /*----------------------------VALIDATION STArTS------------------------*/
-    if (!isValidBody(data))return res.status(400).send({ status: false, message: "Please provide Details" });
+    if (!isValidBody(data))return res.status(400).send({ status: false, message: "Please provide Details in body" });
     let {title,excerpt,userId,ISBN,category,subcategory,reviews,releasedAt,} = data;
 
     // Title
     if (!isValid(title))return res.status(400).send({ status: false, message: "Please provide Title" });
     let checkTitle = await bookModel.findOne({ title });
-    if (checkTitle)return res.status(400).send({ status: false, message: `titile =>${title} is already Taken` });
+    if (checkTitle)return res.status(400).send({ status: false, message: `title =>${title} is already Taken` });
     title=title.toUpperCase()
     
     //excerpt
@@ -83,7 +83,7 @@ const getBooksDetails = async function (req, res) {
 //-----------------------------------------------------------------------------//
 
     let search = await bookModel.find({ $and: [{ isDeleted: false }, data] }).select({_id: 1,title: 1,excerpt: 1,userId: 1,category: 1,releasedAt: 1,reviews:1}).sort({title:1});
-    if(search.length==0)return res.status(404).send({ Status: false, message: "The Books you are searching for migth be deleted by you before or not created yet" })
+    if(search.length==0)return res.status(404).send({ Status: false, message: "The Books you are searching for might be deleted by you before or not created yet" })
     return res.status(200).send({ status: true, message: "Books list", data: search });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
@@ -146,7 +146,7 @@ const deleteBookbyId = async function (req, res) {
     const data = req.params.bookId;
     
     const searchBook = await bookModel.findOne({_id:data});
-    if (!searchBook)return res.status(404).send({ status: false, message: "Not Found...cool" });
+    if (!searchBook)return res.status(404).send({ status: false, message: "Not Found.." });
     if (searchBook.isDeleted == true)return res.status(404).send({ status: false, message: "Already deleted" });
 
     const final = await bookModel.findOneAndUpdate({_id: data},{ isDeleted: true, deletedAt:new Date() },{ new: true }).select({__v:0});
