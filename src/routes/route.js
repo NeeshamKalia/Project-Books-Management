@@ -29,7 +29,9 @@ router.put("/books/:bookId/review/:reviewId",reviewController.updateReviews)
 //---------------delete reviews---------------//
 router.delete("/books/:bookId/review/:reviewId",reviewController.deleteReview)
 
-//Global middleware for not giving bookid in params
+
+
+//Global if api is not available.
 router.all("/**", function (req, res) {
     res.status(400).send({status: false,msg: "The api you request is not available"})});
 
